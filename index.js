@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const Test = require("./testrouter");
+const AirData = require("./airdata-router");
+var utility = require("./utility")
 
 let session_history_data = []
 
@@ -40,20 +41,6 @@ app.get('/', (req, res) => {
 });
 
 
-function rawToProcess(data){
-  return {
-    id: session_history_data.length,
-    co2: data[0],
-    temperature: data[1],
-    humidity: data[2],
-    pressure: data[3],
-    gas: data[4],
-    pm1_0 : data[5],
-    pm2_5: data[6],
-    pm10_0: data[7],
-  }
-
-}
 
 app.get('/getSessionData', (req,res)=>{
   res.json(session_history_data)
@@ -65,8 +52,8 @@ app.post('/pushData', (req,res)=>{
   }
   
   let data = req.body.data.split(",")
-  const proccessedData = rawToProcess(data)
-  session_history_data.push(rawToProcess(data))
+  const proccessedData = utility.rawToProcess(data)
+  session_history_data.push(proccessedData)
   console.log(session_history_data[session_history_data.length-1])
   res.send("Push Data Completed")
   
@@ -74,7 +61,7 @@ app.post('/pushData', (req,res)=>{
 
 
 // MongoDB Path
-app.use("/api/devices",Test)
+app.use("/api/airdata",AirData)
 
 const server = app.listen(8080, () => {
   const host = server.address().address;

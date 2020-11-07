@@ -1,11 +1,12 @@
 var express = require("express");
 var router = express.Router();
-var Devices = require("./testmodel");
+var AirData = require("./airdata-model");
+var utility = require("./utility")
 
 
 // GET all
 router.get("/", (req, res) => {
-    Devices.find().exec((err, data) => {
+    AirData.find().exec((err, data) => {
       if (err) return res.status(400).send(err);
       res.status(200).send(data);
     });
@@ -13,7 +14,7 @@ router.get("/", (req, res) => {
   
   // GET 1
   router.get("/:_id", (req, res) => {
-    Devices.findById(req.params._id).exec((err, data) => {
+    AirData.findById(req.params._id).exec((err, data) => {
       if (err) return res.status(400).send(err);
       res.status(200).send(data);
     });
@@ -22,7 +23,11 @@ router.get("/", (req, res) => {
 
   // POST (create new data)
 router.post("/", (req, res) => {
-    var obj = new Devices(req.body);
+
+  let data = req.body.data.split(",")
+  console.log(data)
+  const proccessedData = utility.rawToProcess(data)
+    var obj = new AirData(proccessedData);
     obj.save((err, data) => {
       if (err) return res.status(400).send(err);
       res.status(200).send("เพิ่มข้อมูลเรียบร้อย");
@@ -31,7 +36,7 @@ router.post("/", (req, res) => {
   
   // PUT (update current data)
   router.put("/:_id", (req, res) => {
-    Devices.findByIdAndUpdate(req.params._id, req.body, (err, data) => {
+    AirData.findByIdAndUpdate(req.params._id, req.body, (err, data) => {
       if (err) return res.status(400).send(err);
       res.status(200).send("อัพเดทข้อมูลเรียบร้อย");
     });
@@ -39,7 +44,7 @@ router.post("/", (req, res) => {
   
   // DELETE (delete 1 data)
   router.delete("/:_id", (req, res) => {
-    Devices.findByIdAndDelete(req.params._id, (err, data) => {
+    AirData.findByIdAndDelete(req.params._id, (err, data) => {
       if (err) return res.status(400).send(err);
       res.status(200).send("ลบข้อมูลเรียบร้อย");
     });
