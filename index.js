@@ -37,7 +37,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('<h1>AIRADAR Data Server</h1>')
 });
 
 
@@ -46,7 +46,7 @@ app.get('/getSessionData', (req,res)=>{
   res.json(session_history_data)
 })
 
-app.post('/pushData', (req,res)=>{
+app.post('/pushSessionData', (req,res)=>{
   if(session_history_data.length == 30){
     session_history_data = []
   }
@@ -54,8 +54,8 @@ app.post('/pushData', (req,res)=>{
   let data = req.body.data.split(",")
   const proccessedData = utility.rawToProcess(data)
   session_history_data.push(proccessedData)
-  console.log(session_history_data[session_history_data.length-1])
-  res.send("Push Data Completed")
+  console.log(`[SESSION : Saved session ${session_history_data[session_history_data.length-1]} ]`)
+  res.send("Push Session Data Completed")
   
 })
 
@@ -67,5 +67,5 @@ const server = app.listen(8080, () => {
   const host = server.address().address;
   const port = server.address().port;
 
-  console.log(`Example app listening at http://${host}:${port}`);
+  console.log(`Server listening at http://${host}:${port}`);
 });
