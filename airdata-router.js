@@ -24,7 +24,10 @@ router.get("/getAllDataByDeviceId/:device_id", (req, res) => {
 
 // GET 1 by device_id
 router.get("/getByDeviceId/:device_id", (req, res) => {
-
+  let limit = 1;
+  if(req.params.limit){
+    limit = req.params.limit
+  }
   AirData.find({ device_id: req.params.device_id }).sort({ _id: -1 }).limit(1).exec((err, data) => {
     if (err) return res.status(400).send(err);
     console.log("[DB=>AirData : GET 1 by object device_id]")
