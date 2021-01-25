@@ -3,7 +3,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const AirData = require("./airdata-router");
-var utility = require("./utility")
+const airCal = require("./air-cal");
+var utility = require("./utility");
+
 
 let session_history_data = []
 
@@ -37,6 +39,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', (req, res) => {
+  console.log(" > ", airCal())
   res.send('<h1>AIRADAR Data Server</h1>')
 });
 
