@@ -2,7 +2,7 @@
 const CONSTANTS = {
     testData: [
         { name: "co2", rawData: 601 },
-        { name: "pm2_5", rawData: -20 },
+        { name: "pm2_5", rawData: 100 },
         { name: "pm10_0", rawData: 0.16 },
         { name: "temperature", rawData: 27.2 },
         { name: "humidity", rawData: 52 },
@@ -68,22 +68,22 @@ const CONSTANTS = {
                 {
                     range: "good",
                     low: 0.0,
-                    high: 0.020,
+                    high: 20.0,
                 },
                 {
                     range: "moderate",
-                    low: 0.021,
-                    high: 0.150,
+                    low: 21,
+                    high: 150,
                 },
                 {
                     range: "unhealthy",
                     low: 0.151,
-                    high: 0.180
+                    high: 180
                 },
                 {
                     range: "hazardous",
-                    low: 0.181,
-                    high: 0.6,
+                    low: 181,
+                    high: 600,
                 },
             ],
 
