@@ -12,16 +12,17 @@ var eventSchema = mongoose.Schema(
         factors : {
             type: Array
         },
-        date: {
+        date:{
             type: Date,
-            default: Date.now,
+            default: Date.now
         }
+
     },
     {
         // กำหนด collection ของ MongoDB หรือจะไม่กำหนดก็ได้
-        collection: "Raw_Data"
+        collection: "Event"
     }
 );
 
-var AirData = mongoose.model("Raw_Data", airdataSchema);
-module.exports = AirData;
+var Event = mongoose.model("Event", eventSchema);
+module.exports = Event;

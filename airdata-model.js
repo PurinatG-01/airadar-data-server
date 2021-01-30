@@ -6,7 +6,7 @@ var airdataSchema = mongoose.Schema(
     device_id: {
       type: String
     },
-    co2: {
+    co: {
       type: Number
     },
     temperature: {
@@ -29,13 +29,17 @@ var airdataSchema = mongoose.Schema(
     },
     pm10_0:{
       type: Number 
+    },
+    date:{
+      type: Date,
+      default: Date.now
     }
   },
   {
     // กำหนด collection ของ MongoDB หรือจะไม่กำหนดก็ได้
-    collection: "Raw_Data"
+    collection: "AirData"
   }
 );
 
-var AirData = mongoose.model("Raw_Data", airdataSchema);
+var AirData = mongoose.model("AirData", airdataSchema);
 module.exports = AirData;

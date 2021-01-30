@@ -3,10 +3,11 @@ var router = express.Router();
 // MongoDB model
 var AirData = require("./airdata-model");
 var Score = require("./score-model")
-var Event = require("./score-model")
+var Event = require("./event-model")
 // Utility
 var utility = require("./utility")
 var scoreCal = require("./score-cal")
+var eventCal = require("./event-cal")
 
 
 
@@ -70,34 +71,42 @@ router.post("/postData/", (req, res) => {
   let data = req.body.data.split(",")
   console.log(data)
   const proccessedData = utility.rawToProcess(data)
-
-
   //  --------------------------------------------------
   // Save to Raw_Data
   var rawData = new AirData(proccessedData);
   rawData.save((err, data) => {
     if (err) return res.status(400).send(err);
     console.log("[DB=>AirData : POST]")
-    res.status(200).send("Successfully post data");
+
+
+    const score = scoreCal(proccessedData)
+    var scoreData = new Score(score);
+    scoreData.save((err, data) => {
+      if (err) return res.status(400).send(err);
+      console.log("[DB=>Score : POST]")
+    
+    
+      const event = eventCal(score)
+      
+      if(event){
+        var eventData = new Event(event);
+        eventData.save((err, data) => {
+          if (err) return res.status(400).send(err);
+          console.log("[DB=>Event : POST]")
+          res.status(200).send("Successfully post data");
+        });
+      }else{
+        res.status(200).send("Successfully post data");
+      }
+      
+    });
   });
   //  -------------- Calculate in period (1 hrs, 1 min, 10 secs ) -------------------
   // Save to Score (ScoreModel)
-  const score = airCal(proccessedData)
-  var scoreData = new Score(score);
-  scoreData.save((err, data) => {
-    if (err) return res.status(400).send(err);
-    console.log("[DB=>Score : POST]")
-    res.status(200).send("Successfully post data");
-  });
+
   //  --------------------------------------------------
   // If has Event => Save to Event
-  const event = airCal(score)
-  var eventData = new Event(event);
-  eventData.save((err, data) => {
-    if (err) return res.status(400).send(err);
-    console.log("[DB=>Score : POST]")
-    res.status(200).send("Successfully post data");
-  });
+
   //  --------------------------------------------------
 });
 

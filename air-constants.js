@@ -1,37 +1,37 @@
 
 const CONSTANTS = {
     testData: [
-        { name: "co2", rawData: 601 },
+        { name: "co", rawData: 601 },
         { name: "pm2_5", rawData: 100 },
         { name: "pm10_0", rawData: 0.16 },
         { name: "temperature", rawData: 27.2 },
         { name: "humidity", rawData: 52 },
         { name: "VOC", rawData: 0.21 },
     ],
-    factors: ["co2", "pm2_5", "pm10_0", "temperature", "humidity", "VOC"],
+    factors: ["co", "pm2_5", "pm10_0", "temperature", "humidity", "VOC"],
     breakpoints: [
         {
-            title: "co2",
+            title: "co",
             ranges: [
                 {
                     range: "good",
-                    low: 340,
-                    high: 600,
+                    low: 0,
+                    high: 1.7,
                 },
                 {
                     range: "moderate",
-                    low: 601,
-                    high: 1000,
+                    low: 1.8,
+                    high: 8.7,
                 },
                 {
                     range: "unhealthy",
-                    low: 1001,
-                    high: 1500,
+                    low: 8.8,
+                    high: 10.0,
                 },
                 {
                     range: "hazardous",
-                    low: 1501,
-                    high: 5000,
+                    low: 10.1,
+                    high: 50.0,
                 },
             ]
 

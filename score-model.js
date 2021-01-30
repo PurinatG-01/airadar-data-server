@@ -11,6 +11,10 @@ var scoreSchema = mongoose.Schema(
         factors_score: {
             type: Array,
         },
+        date: {
+            type: Date,
+            default: Date.now
+        }
     },
     {
         // กำหนด collection ของ MongoDB หรือจะไม่กำหนดก็ได้

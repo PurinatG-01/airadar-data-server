@@ -15,18 +15,18 @@ const factorCal = (name, rawData) => {
 
     if (range) {
         const index = CONSTANTS.IAQIRange.find((e) => (range.range == e.range))
-        console.log("> rawData : ", rawData)
-        console.log("> breakpoint : ", breakpoint)
-        console.log("> range : ", range)
-        console.log("> index : ", index)
+        // console.log("> rawData : ", rawData)
+        // console.log("> breakpoint : ", breakpoint)
+        // console.log("> range : ", range)
+        // console.log("> index : ", index)
         if (range.low == "-")
             range.low = 0
         if (range.high == "-")
             range.high = range.low + 100
 
         AQI = index.high - ((rawData - range.low) * ((index.high - index.low) / (range.high - range.low)))
-        console.log(`> AQI ${name} : `, AQI)
-        console.log("-----------------------------------------------------------")
+        // console.log(`> AQI ${name} : `, AQI)
+        // console.log("-----------------------------------------------------------")
         return AQI.toFixed(2)
     } else {
         console.error(`> ${name} rawData not in any range\n-----------------------------------------------------------`)
@@ -38,12 +38,12 @@ const factorCal = (name, rawData) => {
 const scoreCal = (data) => {
 
     const factorsScore = [
-        { name: "co2", AQI: factorCal("co2", data.co2) },
+        { name: "co", AQI: factorCal("co", data.co) },
         { name: "pm2_5", AQI: factorCal("pm2_5", data.pm2_5) },
         { name: "pm10_0", AQI: factorCal("pm10_0", data.pm10_0) },
         { name: "temperature", AQI: factorCal("temperature", data.temperature) },
         { name: "humidity", AQI: factorCal("humidity", data.humidity) },
-        { name: "VOC", AQI: factorCal("VOC", data.gas) },
+        { name: "VOC", AQI: factorCal("VOC", data.VOC) },
     ]
 
     let deviceAQI = 0.0
@@ -59,11 +59,11 @@ const scoreCal = (data) => {
 
     return {
         // String
-        device_id: data.device_id ? data.device_id : "-",
+        device_id: data.device_id,
         // Number
-        device_score: deviceAQI ? deviceAQI : 0.0,
+        device_score: deviceAQI,
         // Array
-        factors_score: factorsScore ? factorsScore : [],
+        factors_score: factorsScore,
     }
 }
 
@@ -71,22 +71,22 @@ module.exports = scoreCal
 
 
 // Debug
-let AQIs = []
+// let AQIs = []
 
-CONSTANTS.testData.forEach((e) => {
-    AQIs.push({
-        name: e.name,
-        AQI: factorCal(e.name, e.rawData),
-    })
-})
+// CONSTANTS.testData.forEach((e) => {
+//     AQIs.push({
+//         name: e.name,
+//         AQI: factorCal(e.name, e.rawData),
+//     })
+// })
 
-console.log("> AQIs : ", AQIs)
-const testScoreCal = scoreCal({
-    co2: 400,
-    pm2_5: 14,
-    pm10_0: 9,
-    temperature: 27,
-    humidity: 40,
-    gas: 242,
-})
-console.log("> scoreCal : ", testScoreCal)
+// console.log("> AQIs : ", AQIs)
+// const testScoreCal = scoreCal({
+//     co: 400,
+//     pm2_5: 14,
+//     pm10_0: 9,
+//     temperature: 27,
+//     humidity: 40,
+//     gas: 242,
+// })
+// console.log("> scoreCal : ", testScoreCal)
