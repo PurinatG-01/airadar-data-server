@@ -18,7 +18,7 @@ var airdataSchema = mongoose.Schema(
     pressure: {
       type: Number
     },
-    gas: {
+    VOC: {
       type: Number
     },
     pm1_0: {
