@@ -15,22 +15,30 @@ const factorCal = (name, rawData) => {
 
     if (range) {
         const index = CONSTANTS.IAQIRange.find((e) => (range.range == e.range))
-        // console.log("> rawData : ", rawData)
-        // console.log("> breakpoint : ", breakpoint)
-        // console.log("> range : ", range)
-        // console.log("> index : ", index)
+        // In case of index has no boundary
         if (range.low == "-")
             range.low = 0
         if (range.high == "-")
             range.high = range.low + 100
 
         AQI = index.high - ((rawData - range.low) * ((index.high - index.low) / (range.high - range.low)))
-        // console.log(`> AQI ${name} : `, AQI)
-        // console.log("-----------------------------------------------------------")
-        return AQI.toFixed(2)
+       
+        return Number(AQI.toFixed(2))
     } else {
-        console.error(`> ${name} rawData not in any range\n-----------------------------------------------------------`)
-        return "Not in ranged"
+        
+        console.log("> rawData : ",rawData)
+        console.log("> breakpoint.ranges[0].low : ",breakpoint.ranges[0].low)
+
+        // Out of range in lower bound (good)
+        if(rawData <= breakpoint.ranges[0].low){
+            return 100.00
+        }
+        // Out of range in higher bound (hazardous)
+        if(rawData >= breakpoint.ranges[3].high){
+            return 0.00
+        }
+        // console.error(`> ${name} rawData not in any range\n-----------------------------------------------------------`)
+        // return "Not in ranged"
     }
 
 }
@@ -69,24 +77,13 @@ const scoreCal = (data) => {
 
 module.exports = scoreCal
 
-
 // Debug
-// let AQIs = []
-
-// CONSTANTS.testData.forEach((e) => {
-//     AQIs.push({
-//         name: e.name,
-//         AQI: factorCal(e.name, e.rawData),
-//     })
-// })
-
-// console.log("> AQIs : ", AQIs)
 // const testScoreCal = scoreCal({
-//     co: 400,
-//     pm2_5: 14,
+//     co: 1,
+//     pm2_5: 11,
 //     pm10_0: 9,
-//     temperature: 27,
-//     humidity: 40,
-//     gas: 242,
+//     temperature: 22,
+//     humidity: 42,
+//     VOC: 0.12,
 // })
 // console.log("> scoreCal : ", testScoreCal)
