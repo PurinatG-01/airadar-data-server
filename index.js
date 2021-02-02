@@ -40,25 +40,25 @@ app.get('/', (req, res) => {
   res.send('<h1>AIRADAR Data Server</h1>')
 });
 
-app.get('/getSessionData', (req,res)=>{
+app.get('/getSessionData', (req, res) => {
   res.json(session_history_data)
 })
 
-app.post('/pushSessionData', (req,res)=>{
-  if(session_history_data.length == 30){
+app.post('/pushSessionData', (req, res) => {
+  if (session_history_data.length == 30) {
     session_history_data = []
   }
-  
+
   let data = req.body.data.split(",")
   const proccessedData = utility.rawToProcess(data)
   session_history_data.push(proccessedData)
-  console.log(`[SESSION : Saved session ${session_history_data[session_history_data.length-1]} ]`)
+  console.log(`[SESSION : Saved session ${session_history_data[session_history_data.length - 1]} ]`)
   res.send("Push Session Data Completed")
-  
+
 })
 
 // MongoDB Path
-app.use("/api/airdata",AirData)
+app.use("/api/airdata", AirData)
 
 const server = app.listen(8081, () => {
   const host = server.address().address;
