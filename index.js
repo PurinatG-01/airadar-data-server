@@ -1,5 +1,3 @@
-var fs = require('fs')
-var https = require('https')
 const express = require('express');
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -63,17 +61,10 @@ app.post('/pushSessionData', (req,res)=>{
 app.use("/api/airdata",AirData)
 
 
-https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-}, app)
-.listen(8081, function () {
-  console.log(`Server listening at 8081 port`);
-})
 
-// const server = app.listen(8081, () => {
-//   const host = server.address().address;
-//   const port = server.address().port;
+const server = app.listen(8081, () => {
+  const host = server.address().address;
+  const port = server.address().port;
 
-//   console.log(`Server listening at http://${host}:${port}`);
-// });
+  console.log(`Server listening at http://${host}:${port}`);
+});

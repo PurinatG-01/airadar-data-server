@@ -14,8 +14,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "fs": "0.0.1-security",
     "https": "^1.0.0",
+=======
+>>>>>>> 692dd7bd7cff53e815dea6494ea06935a0298df6
     "json2csv": "^5.0.5",
 =======
 >>>>>>> parent of 73f11fb... Added GET airData hist
