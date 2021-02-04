@@ -13,9 +13,12 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "fs": "0.0.1-security",
     "https": "^1.0.0",
     "json2csv": "^5.0.5",
+=======
+>>>>>>> parent of 73f11fb... Added GET airData hist
     "mongoose": "^5.10.13"
   }
 }
