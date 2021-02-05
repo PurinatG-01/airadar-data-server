@@ -65,14 +65,12 @@ router.get("/rawData/getHistoricalByDeviceId/:device_id", (req, res, next) => {
   }
   AirData.find({ device_id: req.params.device_id }).sort({ _id: -1 }).limit(limit).exec((err, data) => {
     if (err) {
-      
       next(err)
       return res.status(400).send(err)
     };
     console.log("[DB=>AirData : GET Historical CSV data by device_id]")
     const fileName = req.query.fileName ? req.query.fileName : `${req.params.device_id}.csv`
     if(data.length != 0 ){
-      // console.log("> data : ", data.length)
       const csv = utility.jsonToCSV(data)
       res.header('Content-Type', 'text/csv');
       res.attachment(fileName);

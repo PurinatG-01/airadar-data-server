@@ -1,3 +1,5 @@
+const { Parser } = require('json2csv')
+
 function rawToProcess(data){
     return {
       device_id : data[8],  
@@ -13,4 +15,12 @@ function rawToProcess(data){
     }
   
 }
-module.exports =  { rawToProcess };
+
+function jsonToCSV(data, fields) {
+    const json2csv = new Parser();
+    // Convert BSON to JSON then parse to CSV format
+    const csv = json2csv.parse(JSON.parse(JSON.stringify(data)));
+    return csv
+  }
+  
+module.exports = { rawToProcess, jsonToCSV };
