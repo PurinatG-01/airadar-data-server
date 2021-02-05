@@ -58,19 +58,29 @@ router.get("/rawData/getByObjectId/:_id", (req, res) => {
 
 // GET Historical CSV by device_id
 
-router.get("/rawData/getHistoricalByDeviceId/:device_id", (req, res) => {
+router.get("/rawData/getHistoricalByDeviceId/:device_id", (req, res, next) => {
   let limit = 10;
   if (req.query.limit) {
     limit = Number(req.query.limit)
   }
   AirData.find({ device_id: req.params.device_id }).sort({ _id: -1 }).limit(limit).exec((err, data) => {
-    if (err) return res.status(400).send(err);
+    if (err) {
+      
+      next(err)
+      return res.status(400).send(err)
+    };
     console.log("[DB=>AirData : GET Historical CSV data by device_id]")
     const fileName = req.query.fileName ? req.query.fileName : `${req.params.device_id}.csv`
-    const csv = utility.jsonToCSV(data)
-    res.header('Content-Type', 'text/csv');
-    res.attachment(fileName);
-    res.status(200).send(csv);
+    if(data.length != 0 ){
+      // console.log("> data : ", data.length)
+      const csv = utility.jsonToCSV(data)
+      res.header('Content-Type', 'text/csv');
+      res.attachment(fileName);
+      res.status(200).send(csv);
+    }else{
+      res.status(200).send("No data available");
+    }
+   
 
   });
 })
