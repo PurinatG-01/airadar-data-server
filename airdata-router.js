@@ -13,7 +13,7 @@ var eventCal = require("./event-cal")
 
 // ============================= GET data =============================
 
-// ---------------------- AirData ----------------------------
+// ---------------------- Raw_Data ----------------------------
 // GET all
 router.get("/rawData/getAllData", (req, res) => {
   AirData.find().exec((err, data) => {
@@ -48,7 +48,7 @@ router.get("/rawData/getByDeviceId/:device_id", (req, res) => {
 })
 
 // GET 1 by object_id
-router.get("/rawData/getByObjectId/:_id", (req, res) => {
+router.get("/getByObjectId/:_id", (req, res) => {
   AirData.findById(req.params._id).exec((err, data) => {
     if (err) return res.status(400).send(err);
     console.log("[DB=>AirData : GET 1 by object _id]")
@@ -139,21 +139,21 @@ router.post("/postData/", (req, res) => {
     scoreData.save((err, data) => {
       if (err) return res.status(400).send(err);
       console.log("[DB=>Score : POST]")
-
-
+    
+    
       const event = eventCal(score)
-
-      if (event) {
+      
+      if(event){
         var eventData = new Event(event);
         eventData.save((err, data) => {
           if (err) return res.status(400).send(err);
           console.log("[DB=>Event : POST]")
           res.status(200).send("Successfully post data");
         });
-      } else {
+      }else{
         res.status(200).send("Successfully post data");
       }
-
+      
     });
   });
   //  -------------- Calculate in period (1 hrs, 1 min, 10 secs ) -------------------
