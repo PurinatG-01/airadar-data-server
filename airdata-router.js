@@ -8,10 +8,26 @@ var Event = require("./event-model")
 var utility = require("./utility")
 var scoreCal = require("./score-cal")
 var eventCal = require("./event-cal")
+var axios = require("axios")
 
-
+const blynk_address = "139.59.126.32:8080" 
 
 // ============================= GET data =============================
+
+// GET Device status
+router.get("/getDeviceStatus/:device_id", (req, res) => {
+  console.log(`Get status !! ${req.params.device_id}`)
+  axios
+  .get(`http://${blynk_address}/${req.params.device_id}/isHardwareConnected`)
+  .then((response)=>{
+    res.send(response.data)
+    console.log("> status response : ",response)
+  }).catch((err)=>{
+    res.status(400).send(err);
+  })
+
+})
+
 
 // ---------------------- Raw_Data ----------------------------
 // GET all
@@ -70,18 +86,19 @@ router.get("/rawData/getHistoricalByDeviceId/:device_id", (req, res, next) => {
     };
     console.log("[DB=>AirData : GET Historical CSV data by device_id]")
     const fileName = req.query.fileName ? req.query.fileName : `${req.params.device_id}.csv`
-    if(data.length != 0 ){
+    if (data.length != 0) {
       const csv = utility.jsonToCSV(data)
       res.header('Content-Type', 'text/csv');
       res.attachment(fileName);
       res.status(200).send(csv);
-    }else{
+    } else {
       res.status(200).send("No data available");
     }
-   
+
 
   });
 })
+
 
 // ---------------------- Score ----------------------------
 
@@ -137,21 +154,21 @@ router.post("/postData/", (req, res) => {
     scoreData.save((err, data) => {
       if (err) return res.status(400).send(err);
       console.log("[DB=>Score : POST]")
-    
-    
+
+
       const event = eventCal(score)
-      
-      if(event){
+
+      if (event) {
         var eventData = new Event(event);
         eventData.save((err, data) => {
           if (err) return res.status(400).send(err);
           console.log("[DB=>Event : POST]")
           res.status(200).send("Successfully post data");
         });
-      }else{
+      } else {
         res.status(200).send("Successfully post data");
       }
-      
+
     });
   });
   //  -------------- Calculate in period (1 hrs, 1 min, 10 secs ) -------------------
