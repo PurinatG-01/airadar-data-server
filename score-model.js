@@ -11,6 +11,9 @@ var scoreSchema = mongoose.Schema(
         factors_score: {
             type: Array,
         },
+        level:{
+            type: String,
+        },
         date: {
             type: Date,
             default: Date.now

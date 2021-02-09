@@ -64,26 +64,23 @@ const scoreCal = (data) => {
     })
 
     deviceAQI = deviceAQI / (6 - notInRanged)
+    let level = "-"
+    CONSTANTS.IAQIRange.forEach((range)=>{
+        if(deviceAQI >= range.low && deviceAQI <= range.high){
+            level = range.range
+        }
+    })
 
     return {
         // String
         device_id: data.device_id,
         // Number
         device_score: deviceAQI,
+        // String
+        level: level,
         // Array
         factors_score: factorsScore,
     }
 }
 
 module.exports = scoreCal
-
-// Debug
-// const testScoreCal = scoreCal({
-//     co: 1,
-//     pm2_5: 11,
-//     pm10_0: 9,
-//     temperature: 22,
-//     humidity: 42,
-//     VOC: 0.12,
-// })
-// console.log("> scoreCal : ", testScoreCal)
