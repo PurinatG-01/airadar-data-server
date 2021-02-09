@@ -10,7 +10,7 @@ var scoreCal = require("./score-cal")
 var eventCal = require("./event-cal")
 var axios = require("axios")
 
-const blynk_address = "139.59.126.32:8080" 
+const blynk_address = "139.59.126.32:8080"
 
 // ============================= GET data =============================
 
@@ -18,13 +18,13 @@ const blynk_address = "139.59.126.32:8080"
 router.get("/getDeviceStatus/:device_id", (req, res) => {
   console.log(`Get status !! ${req.params.device_id}`)
   axios
-  .get(`http://${blynk_address}/${req.params.device_id}/isHardwareConnected`)
-  .then((response)=>{
-    res.send(response.data)
-    console.log("> status response : ",response)
-  }).catch((err)=>{
-    res.status(400).send(err);
-  })
+    .get(`http://${blynk_address}/${req.params.device_id}/isHardwareConnected`)
+    .then((response) => {
+      res.send(response.data)
+      console.log("> status response : ", response)
+    }).catch((err) => {
+      res.status(400).send(err);
+    })
 
 })
 
@@ -94,8 +94,6 @@ router.get("/rawData/getHistoricalByDeviceId/:device_id", (req, res, next) => {
     } else {
       res.status(200).send("No data available");
     }
-
-
   });
 })
 
@@ -111,10 +109,17 @@ router.get("/score/getByDeviceId/:device_id", (req, res) => {
   console.log("> limit : ", limit)
   Score.find({ device_id: req.params.device_id }).sort({ date: -1 }).limit(limit).exec((err, data) => {
     if (err) return res.status(400).send(err);
-    console.log("[DB=>AirData : GET 1 by object device_id]")
-    res.status(200).send(data)
+    console.log("[DB=>AirData : GET 1 by device_id]")
+    axios
+      .get(`http://${blynk_address}/${req.params.device_id}/isHardwareConnected`)
+      .then((status) => {
+        const result = [{ ...JSON.parse(JSON.stringify(data[0])), online: status.data }]
+        res.status(200).send(result)
+      })
+      .catch((err2) => {
+        res.status(400).send(err2)
+      })
   })
-
 })
 
 
