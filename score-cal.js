@@ -51,7 +51,6 @@ const scoreCal = (data) => {
         { name: "pm10_0", AQI: factorCal("pm10_0", data.pm10_0) },
         { name: "temperature", AQI: factorCal("temperature", data.temperature) },
         { name: "humidity", AQI: factorCal("humidity", data.humidity) },
-        { name: "VOC", AQI: factorCal("VOC", data.VOC) },
     ]
 
     let deviceAQI = 0.0

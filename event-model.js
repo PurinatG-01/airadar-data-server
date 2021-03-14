@@ -6,10 +6,7 @@ var eventSchema = mongoose.Schema(
         device_id: {
             type: String
         },
-        description: {
-            type: Array
-        },
-        factors : {
+        event_factors: {
             type: Array
         },
         date:{

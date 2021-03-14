@@ -8,7 +8,7 @@ const CONSTANTS = {
         { name: "humidity", rawData: 52 },
         { name: "VOC", rawData: 0.21 },
     ],
-    factors: ["co", "pm2_5", "pm10_0", "temperature", "humidity", "VOC"],
+    factors: ["co", "pm2_5", "pm10_0", "temperature", "humidity"],
     breakpoints: [
         {
             title: "co",

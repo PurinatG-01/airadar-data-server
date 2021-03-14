@@ -12,6 +12,10 @@ var axios = require("axios")
 
 const blynk_address = "139.59.126.32:8080"
 
+
+let event_session = []
+
+
 // ============================= GET data =============================
 
 // GET Device status
@@ -144,7 +148,6 @@ router.get("/event/getByDeviceId/:device_id", (req, res) => {
 // POST (create new data)
 router.post("/postData/", (req, res) => {
   let data = req.body.data.split(",")
-  console.log(data)
   const proccessedData = utility.rawToProcess(data)
   //  --------------------------------------------------
   // Save to Raw_Data
@@ -153,34 +156,45 @@ router.post("/postData/", (req, res) => {
     if (err) return res.status(400).send(err);
     console.log("[DB=>AirData : POST]")
 
-
+    //  -------------- Calculate in period (1 hrs, 1 min, 10 secs ) -------------------
+    // Save to Score (ScoreModel)
     const score = scoreCal(proccessedData)
     var scoreData = new Score(score);
     scoreData.save((err, data) => {
       if (err) return res.status(400).send(err);
       console.log("[DB=>Score : POST]")
 
+      const EVENT = eventCal(score, event_session)
+      if (EVENT) {
+        // if same ignore new upcoming
+        if (EVENT.isSame) {
+          console.log("[3] Same event occur")
+          res.status(200).send("Successfully post data")
+        }
+        else {
+          event_session = EVENT.new_event_session
+          console.log("[1] New event arrived")
 
-      const event = eventCal(score)
+          var eventData = new Event({ device_id: score.device_id, event_factors: EVENT.new_event });
+          eventData.save((err, data) => {
+            if (err) return res.status(400).send(err);
+            console.log("[DB=>Event : POST]")
 
-      if (event) {
-        var eventData = new Event(event);
-        eventData.save((err, data) => {
-          if (err) return res.status(400).send(err);
-          console.log("[DB=>Event : POST]")
-          res.status(200).send("Successfully post data");
-        });
+            res.status(200).send("Successfully post data");
+          });
+        }
+
       } else {
+        //  No event (Reset specific device_id session)
+        console.log("[2] No event !!")
+        event_session = event_session.filter((session) => (session.device_id != score.device_id))
         res.status(200).send("Successfully post data");
       }
 
+
     });
   });
-  //  -------------- Calculate in period (1 hrs, 1 min, 10 secs ) -------------------
-  // Save to Score (ScoreModel)
 
-  //  --------------------------------------------------
-  // If has Event => Save to Event
 
   //  --------------------------------------------------
 });
