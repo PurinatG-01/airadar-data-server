@@ -77,7 +77,7 @@ const CONSTANTS = {
                 },
                 {
                     range: "unhealthy",
-                    low: 0.151,
+                    low: 151,
                     high: 180
                 },
                 {
