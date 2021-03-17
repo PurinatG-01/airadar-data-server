@@ -129,7 +129,7 @@ router.get("/score/getByDeviceId/:device_id", (req, res) => {
 
 // ---------------------- Event ----------------------------
 
-// Get event by device_id [1, 5, 10, All (Optional) ]
+// Get events by device_id [1, 5, 10, All (Optional) ]
 router.get("/event/getByDeviceId/:device_id", (req, res) => {
   let limit = 1;
   if (req.query.limit) {
@@ -142,6 +142,15 @@ router.get("/event/getByDeviceId/:device_id", (req, res) => {
     res.status(200).send(data)
   })
 
+})
+
+// Get events by multiple device_id [10]
+router.get("/event/getByMultipleDeviceIds", (req, res) => {
+  let devicesId = req.body.devices.split(',')
+  Event.find({ device_id: devicesId }).sort({ date: -1 }).limit(10).exec((err, data) => {
+    if (err) return res.status(400).send(err);
+    res.status(200).send(data)
+  })
 })
 
 // ================================= POST data =====================================
