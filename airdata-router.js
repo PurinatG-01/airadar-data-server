@@ -146,7 +146,9 @@ router.get("/event/getByDeviceId/:device_id", (req, res) => {
 
 // Get events by multiple device_id [10]
 router.get("/event/getByMultipleDeviceIds", (req, res) => {
-  let devicesId = req.body.devices.split(',')
+  // console.log("> req :", req)
+  // console.log("> params : ", req.params )
+  let devicesId = req.query.devices.split(',')
   Event.find({ device_id: devicesId }).sort({ date: -1 }).limit(10).exec((err, data) => {
     if (err) return res.status(400).send(err);
     res.status(200).send(data)
