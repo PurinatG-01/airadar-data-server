@@ -22,19 +22,19 @@ const factorCal = (name, rawData) => {
             range.high = range.low + 100
 
         AQI = index.high - ((rawData - range.low) * ((index.high - index.low) / (range.high - range.low)))
-       
+
         return Number(AQI.toFixed(2))
     } else {
-        
-        console.log("> rawData : ",rawData)
-        console.log("> breakpoint.ranges[0].low : ",breakpoint.ranges[0].low)
+
+        console.log("> rawData : ", rawData)
+        console.log("> breakpoint.ranges[0].low : ", breakpoint.ranges[0].low)
 
         // Out of range in lower bound (good)
-        if(rawData <= breakpoint.ranges[0].low){
+        if (rawData <= breakpoint.ranges[0].low) {
             return 100.00
         }
         // Out of range in higher bound (hazardous)
-        if(rawData >= breakpoint.ranges[3].high){
+        if (rawData >= breakpoint.ranges[3].high) {
             return 0.00
         }
         // console.error(`> ${name} rawData not in any range\n-----------------------------------------------------------`)
@@ -53,19 +53,22 @@ const scoreCal = (data) => {
         { name: "humidity", AQI: factorCal("humidity", data.humidity) },
     ]
 
-    let deviceAQI = 0.0
+    let deviceAQI = factorsScore[0].AQI
     let notInRanged = 0
     factorsScore.forEach((e) => {
-        if (e.AQI != "Not in ranged")
-            deviceAQI += Number(e.AQI)
-        else
+        if (e.AQI != "Not in ranged" && e.AQI <= deviceAQI) {
+            deviceAQI = e.AQI
+        }
+        else {
             notInRanged += 1
+        }
     })
 
     deviceAQI = deviceAQI / (6 - notInRanged)
     let level = "-"
-    CONSTANTS.IAQIRange.forEach((range)=>{
-        if(deviceAQI >= range.low && deviceAQI <= range.high){
+
+    CONSTANTS.IAQIRange.forEach((range) => {
+        if (deviceAQI >= range.low && deviceAQI <= range.high) {
             level = range.range
         }
     })
