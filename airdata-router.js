@@ -12,9 +12,7 @@ var axios = require("axios")
 
 const blynk_address = "139.59.126.32:8080"
 
-
 let event_session = []
-
 
 // ============================= GET data =============================
 
@@ -79,11 +77,19 @@ router.get("/getByObjectId/:_id", (req, res) => {
 // GET Historical CSV by device_id
 
 router.get("/rawData/getHistoricalByDeviceId/:device_id", (req, res, next) => {
-  let limit = 10;
-  if (req.query.limit) {
-    limit = Number(req.query.limit)
-  }
-  AirData.find({ device_id: req.params.device_id }).sort({ _id: -1 }).limit(limit).exec((err, data) => {
+
+  let date = new Date()
+  date.setDate(date.getDate() - 7)
+
+  AirData.aggregate([
+    { "$match": { 'device_id': req.params.device_id } }
+    ,
+    {
+      '$match': {
+        'date': { '$gt': date }
+      }
+    },
+  ]).sort({ _id: -1 }).exec((err, data) => {
     if (err) {
       next(err)
       return res.status(400).send(err)
