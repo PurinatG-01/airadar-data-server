@@ -77,7 +77,6 @@ router.get("/getByObjectId/:_id", (req, res) => {
 // GET Historical CSV by device_id
 
 router.get("/rawData/getHistoricalByDeviceId/:device_id", (req, res, next) => {
-
   let date = new Date()
   date.setDate(date.getDate() - 7)
 
@@ -207,13 +206,8 @@ router.post("/postData/", (req, res) => {
         event_session = event_session.filter((session) => (session.device_id != score.device_id))
         res.status(200).send("Successfully post data");
       }
-
-
     });
   });
-
-
-  //  --------------------------------------------------
 });
 
 // =========================== OTHERS [PUT, DELETE] =================================

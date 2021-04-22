@@ -20,7 +20,6 @@ var scoreSchema = mongoose.Schema(
         }
     },
     {
-        // กำหนด collection ของ MongoDB หรือจะไม่กำหนดก็ได้
         collection: "Score"
     }
 );

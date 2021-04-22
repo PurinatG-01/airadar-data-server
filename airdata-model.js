@@ -2,7 +2,6 @@ var mongoose = require("mongoose");
 
 var airdataSchema = mongoose.Schema(
   {
-    // กำหนด ชื่อและชนิดของ document เรา
     device_id: {
       type: String
     },
@@ -36,7 +35,6 @@ var airdataSchema = mongoose.Schema(
     }
   },
   {
-    // กำหนด collection ของ MongoDB หรือจะไม่กำหนดก็ได้
     collection: "AirData"
   }
 );

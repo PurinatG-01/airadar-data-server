@@ -64,7 +64,6 @@ const scoreCal = (data) => {
         }
     })
 
-    deviceAQI = deviceAQI / (6 - notInRanged)
     let level = "-"
 
     CONSTANTS.IAQIRange.forEach((range) => {
