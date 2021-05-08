@@ -167,6 +167,8 @@ router.post("/postData/", (req, res) => {
   const proccessedData = utility.rawToProcess(data)
   //  --------------------------------------------------
   // Save to Raw_Data
+  // console.log(`> proccessedData : `,proccessedData)
+  
   var rawData = new AirData(proccessedData);
   rawData.save((err, data) => {
     if (err) return res.status(400).send(err);
