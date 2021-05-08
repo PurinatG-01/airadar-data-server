@@ -11,7 +11,7 @@ function rawToProcess(data){
       pm1_0 : data[5],
       pm2_5: data[6],
       pm10_0: data[7],
-      
+      device_send_date: data[9],
     }
   
 }

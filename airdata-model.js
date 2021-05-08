@@ -32,7 +32,14 @@ var airdataSchema = mongoose.Schema(
     date:{
       type: Date,
       default: Date.now
-    }
+    },
+    device_send_date:{
+      type: Date,
+    },
+    dataserver_received_data:{
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     collection: "AirData"
