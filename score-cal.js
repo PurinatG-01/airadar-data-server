@@ -37,8 +37,7 @@ const factorCal = (name, rawData) => {
         if (rawData >= breakpoint.ranges[3].high) {
             return 0.00
         }
-        // console.error(`> ${name} rawData not in any range\n-----------------------------------------------------------`)
-        // return "Not in ranged"
+       return "Not in ranged"
     }
 
 }
