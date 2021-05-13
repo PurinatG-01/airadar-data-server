@@ -35,16 +35,20 @@ var airdataSchema = mongoose.Schema(
     },
     device_send_date:{
       type: Date,
+      // default: Date.now,
     },
     dataserver_received_data:{
       type: Date,
       default: Date.now,
     },
+    sequence_no:{
+      type: Number,
+    }
   },
   {
-    collection: "AirData"
+    collection: "AirData_testing"
   }
 );
 
-var AirData = mongoose.model("AirData", airdataSchema);
+var AirData = mongoose.model("AirData_testing", airdataSchema);
 module.exports = AirData;

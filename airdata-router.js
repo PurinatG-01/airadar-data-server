@@ -13,6 +13,7 @@ var axios = require("axios")
 const blynk_address = "139.59.126.32:8080"
 
 let event_session = []
+let packet_receive_count = 0
 
 // ============================= GET data =============================
 
@@ -163,6 +164,9 @@ router.get("/event/getByMultipleDeviceIds", (req, res) => {
 // ================================= POST data =====================================
 // POST (create new data)
 router.post("/postData/", (req, res) => {
+  packet_receive_count+=1
+  console.log(`> packet_receive_count : `,packet_receive_count)
+  
   let data = req.body.data.split(",")
   const proccessedData = utility.rawToProcess(data)
   //  --------------------------------------------------
@@ -171,6 +175,8 @@ router.post("/postData/", (req, res) => {
   
   var rawData = new AirData(proccessedData);
   rawData.save((err, data) => {
+    console.log(`> err : `,err)
+    
     if (err) return res.status(400).send(err);
     console.log("[DB=>AirData : POST]")
 

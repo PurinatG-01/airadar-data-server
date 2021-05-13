@@ -26,8 +26,8 @@ const factorCal = (name, rawData) => {
         return Number(AQI.toFixed(2))
     } else {
 
-        console.log("> rawData : ", rawData)
-        console.log("> breakpoint.ranges[0].low : ", breakpoint.ranges[0].low)
+        // console.log("> rawData : ", rawData)
+        // console.log("> breakpoint.ranges[0].low : ", breakpoint.ranges[0].low)
 
         // Out of range in lower bound (good)
         if (rawData <= breakpoint.ranges[0].low) {
